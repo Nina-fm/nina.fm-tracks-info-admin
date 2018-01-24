@@ -109,12 +109,11 @@ export default {
   },
   methods: {
   	addTrack: function(){
-  		mixtapes.addTrack({...this.track});
+  		this.mixtape.tracks.push({...this.track});
   		this.track = {};
   	},
   	removeTrack: function(index){
-  		mixtapes.data.mixtape.tracks.splice(index, 1);
-
+  		this.mixtape.tracks.splice(index, 1);
   	},
   	saveMixtape: function(){
   		mixtapes.create(this.mixtape, {

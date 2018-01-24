@@ -25,7 +25,11 @@ export default (function(){
 			then(function(result){
               	if(callbacks.success){
               		var m = _.find(result.data, function(m){return m.id == id;});
-              		m.text_tracks = m.text_tracks.split('\n')
+
+              		if(m.text_tracks){
+              			m.text_tracks.split('\n');
+              		}
+
               		callbacks.success(m);	
               	};
 			})
@@ -43,9 +47,6 @@ export default (function(){
 		    error => {
 		        console.error(error);
 		    });
-		},
-		addTrack(track){
-			this.data.mixtape.tracks.push(track);
 		},
 		delete(mixtape_id, callbacks){
 			axios.delete(
