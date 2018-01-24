@@ -77,13 +77,15 @@
 	          	<th>Début</th>
 	            <th>Artiste</th>
 	            <th>Titre</th>
+	           	<th></th>
 	          </tr>
 	        </thead>
-	        <tbody v-for="track in mixtape.tracks">
+	        <tbody v-for="(track, index) in mixtape.tracks">
 	          <tr>
 	          	<td>{{track.start_hours}}:{{track.start_minutes}}:{{track.start_seconds}}</td>
 	            <td>{{track.artist}}</td>
 	            <td>{{track.title}}</td>
+	            <td><a v-on:click="removeTrack(index)">remove</a></td>
 	          </tr>
 	        </tbody>
 	      </table>
@@ -100,13 +102,18 @@ export default {
   name: 'Mixtape',
   data () {
     return {
-      mixtape : mixtapes.data.mixtape,
-      track : mixtapes.data.track
+      mixtape : {...mixtapes.data.mixtape},
+      track : {...mixtapes.data.track}
     }
   },
   methods: {
   	addTrack: function(){
   		mixtapes.addTrack({...this.track});
+  		this.track = {};
+  	},
+  	removeTrack: function(index){
+  		mixtapes.data.mixtape.tracks.splice(index, 1);
+
   	},
   	saveMixtape: function(){
   		mixtapes.create(this.mixtape, {
