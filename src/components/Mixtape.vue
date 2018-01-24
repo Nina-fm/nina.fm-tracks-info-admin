@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import mixtapes from '../data/mixtapes'
 import {_} from 'vue-underscore'
 
 export default {
@@ -51,14 +51,12 @@ export default {
     }
   },
   mounted () {
-
-    axios({method: 'GET', 'url': process.env.API_URL}).then(result => {
-    	var id = this.$route.params.id
-    	this.mixtape = _.find(result.data, function(m){return m.id == id;})
-    	this.mixtape.text_tracks = this.mixtape.text_tracks.split('\n')
-    }, error => {
-        console.error(error);
-    });
+  	var that = this;
+  	mixtapes.get(this.$route.params.id, {
+  		success : function(mixtape){
+  			that.mixtape = mixtape;
+  		}
+  	});
   },
 }
 </script>

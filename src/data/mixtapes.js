@@ -18,6 +18,21 @@ export default (function(){
 			},
 			track: {}
 		},
+		get(id, callbacks){
+			axios({
+				method: 'GET', 
+				'url': process.env.API_URL}).
+			then(function(result){
+              	if(callbacks.success){
+              		var m = _.find(result.data, function(m){return m.id == id;});
+              		m.text_tracks = m.text_tracks.split('\n')
+              		callbacks.success(m);	
+              	};
+			})
+			.catch(function (error) {
+            	if(callbacks.error) callbacks.error(error);
+			});
+		},
 		getList(){
 			axios({ 
 				method: "GET", 
