@@ -27,7 +27,7 @@ export default (function(){
               		var m = _.find(result.data, function(m){return m.id == id;});
 
               		if(m.text_tracks){
-              			m.text_tracks.split('\n');
+              			m.text_tracks = m.text_tracks.split('\n');
               		}
 
               		callbacks.success(m);	
