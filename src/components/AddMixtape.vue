@@ -24,6 +24,7 @@
 	        </div>
 
           <img :src="mixtape.cover" width="400px"/>
+          <a v-on:click="removeImage">remove</a>
 
 		  <div class="form-group">
 		    <label class="col-sm-2 control-label">Année</label>
@@ -142,6 +143,9 @@ export default {
 	    };
 
 	    reader.readAsDataURL(file);
+	},
+	removeImage(){
+		this.mixtape.cover = null;
 	}
   }
 }

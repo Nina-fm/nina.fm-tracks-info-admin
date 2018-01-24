@@ -13,6 +13,7 @@ export default (function(){
 			mixtapes: [],
 			mixtape : {
 				type: 'mixtape',
+				cover: null,
 				tracks: []
 			},
 			track: {}
