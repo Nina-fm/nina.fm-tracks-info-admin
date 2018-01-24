@@ -46,11 +46,11 @@ export default {
   name: 'Mixtape',
   data () {
     return {
-      mixtape: {}
+      mixtape: {},
+      pictures_base_url: process.env.API_URL
     }
   },
   mounted () {
-    this.pictures_base_url = process.env.API_URL
 
     axios({method: 'GET', 'url': process.env.API_URL}).then(result => {
     	var id = this.$route.params.id
