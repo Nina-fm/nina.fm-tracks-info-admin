@@ -63,6 +63,7 @@ export default (function(){
 				"url": process.env.API_URL}).
 			then(result => {
 		    	mixtapes.data.mixtapes = _.filter(result.data, function(m){return m.type == 'mixtape';});
+		    	mixtapes.data.tags = _.unique(_.compact(_.flatten(_.pluck(mixtapes.data.mixtapes, 'tags'))));
 		    }, 
 		    error => {
 		        console.error(error);

@@ -41,7 +41,9 @@
 		  <div class="form-group">
 		    <label class="col-sm-2 control-label">Tags</label>
 		    <div class="col-sm-10">
-		    	<input type="text" class="form-control" v-model:click="tag">
+		    	<input id="tag" type="text" class="form-control" v-model="tag">
+		    	<typeahead v-model="tag" target="#tag" :data="tags"/>
+
 		    	<button class="btn pull-right" v-on:click="addTag">Ajouter</button>
 		    	<div>
 		    		<span v-for="tag in mixtape.tags" class="label label-default">
@@ -113,15 +115,17 @@
 import mixtapes from '../data/mixtapes'
 import router from '../router';
 import {_} from 'vue-underscore';
-import Vue from 'vue';
+import {Typeahead} from 'uiv'
 
 export default {
   name: 'AddEditMixtape',
+  components: {Typeahead},
   data () {
     return {
       mixtape : {...mixtapes.data.mixtape},
       track : {...mixtapes.data.track},
       tag : '',
+      tags : mixtapes.tags,
       pictures_base_url: process.env.API_URL,
       mode : 'add'
     }
