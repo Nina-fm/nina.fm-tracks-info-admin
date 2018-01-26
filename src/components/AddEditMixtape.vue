@@ -1,6 +1,6 @@
 <template>
   	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-  		<h1 class="page-header">{{mode == 'add' ? 'Ajouter' : 'Modifier'}} une mixtape <button class="btn btn-primary pull-right" v-on:click="saveMixtape">Enregistrer</button></h1>
+  		<h1 class="page-header">{{mode == 'add' ? 'Ajouter' : 'Modifier'}} une mixtape <button class="btn btn-primary pull-right" v-on:click="saveMixtape">Enregistrer</button><button class="btn btn-primary pull-right" v-on:click="cancel">Annuler</button></h1>
   		<form class="form-horizontal" v-on:submit.prevent>
 		  <div class="form-group">
 		    <label class="col-sm-2 control-label">DJ(s)</label>
@@ -152,6 +152,9 @@ export default {
   		}
   		
   	},
+  	cancel(){
+  		router.push(this.mode == 'add' ? '/mixtapes/list' : '/mixtape/' + this.mixtape.id);
+  	},
   	selectMixtapeCover(e) {
 		var files = e.target.files || e.dataTransfer.files;
 	    if (!files.length)
@@ -178,4 +181,7 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+	h1 button{
+		margin-left:10px;
+	}
 </style>
