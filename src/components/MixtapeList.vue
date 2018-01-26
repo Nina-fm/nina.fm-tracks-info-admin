@@ -1,6 +1,12 @@
 <template>
   <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <h1 class="page-header">Mixtapes <router-link to="/mixtape/add" tag="button" class="btn btn-primary pull-right">Ajouter une mixtape</router-link></h1>
+    <p>
+      <span v-for="tag in tags" class="label label-default"><a v-on:click='addTagFilter(tag)'>{{tag}}</a></span>
+    </p>
+        Filtres : 
+          <span v-for="tag in filters.tags" class="label label-default"><a v-on:click='removeTagFilter(tag)'>{{tag}}</a></span>
+    </p>
     <div class="table-responsive">
       <table class="table table-striped">
         <thead>
@@ -33,6 +39,12 @@ export default (function(){
       return mixtapes.data;
     },
     methods : {
+      addTagFilter : function(tag){
+        mixtapes.filter({tag : tag});
+      },
+      removeTagFilter : function(tag){
+        mixtapes.unfilter({tag : tag});
+      },
       deleteMixtape : function(mixtape_id){
         if(confirm('Etes-vous sûr de vouloir supprimer cette mixtape? L\'action est irréversible.')){
           mixtapes.delete(mixtape_id, {
@@ -51,6 +63,9 @@ export default (function(){
 <style scoped>
   td img{
     height: 50px;
+  }
+  span.label{
+    margin-right : 5px;
   }
 
 /*h1, h2 {

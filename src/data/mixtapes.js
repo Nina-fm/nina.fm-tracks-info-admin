@@ -8,6 +8,8 @@ export default (function(){
 		password: process.env.API_PASSWORD
 	};
 
+	var mixtape_list = [];
+
 	function saveMixtape(http_method, mixtape, callbacks){
     	axios({
 		  method: http_method,
@@ -26,6 +28,10 @@ export default (function(){
 	var mixtapes = {
 		data : {
 			mixtapes: [],
+			tags : [],
+			filters : {
+				tags : []
+			},
 			mixtape : {
 				type: 'mixtape',
 				cover: null,
@@ -57,13 +63,36 @@ export default (function(){
             	if(callbacks.error) callbacks.error(error);
 			});
 		},
+		filter(filter){
+
+			if(filter){
+				if(!_.contains(this.data.filters.tags, filter.tag))
+					this.data.filters.tags.push(filter.tag);
+			}
+
+			this.data.mixtapes = mixtape_list;
+
+			_.each(this.data.filters.tags, function(t){
+
+				mixtapes.data.mixtapes = _.filter(mixtapes.data.mixtapes, function(m){
+					return _.contains(m.tags, t);
+				});
+			});
+
+		},
+		unfilter(filter){
+			this.data.mixtapes = mixtape_list;
+			this.data.filters.tags = _.without(mixtapes.data.filters.tags, filter.tag);
+			this.filter();
+		},
 		getList(){
 			axios({ 
 				method: "GET", 
 				"url": process.env.API_URL}).
 			then(result => {
-		    	mixtapes.data.mixtapes = _.filter(result.data, function(m){return m.type == 'mixtape';});
-		    	mixtapes.data.tags = _.unique(_.compact(_.flatten(_.pluck(mixtapes.data.mixtapes, 'tags'))));
+				mixtape_list = _.filter(result.data, function(m){return m.type == 'mixtape';});
+				mixtapes.data.tags = _.unique(_.compact(_.flatten(_.pluck(mixtape_list, 'tags'))));
+				this.filter();
 		    }, 
 		    error => {
 		        console.error(error);
