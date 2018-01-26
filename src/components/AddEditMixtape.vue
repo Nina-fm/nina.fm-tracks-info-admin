@@ -148,6 +148,8 @@ export default {
   		this.mixtape.tracks.splice(index, 1);
   	},
   	addTag: function(){
+  		if(this.mixtape.tags.includes(this.tag))
+  			return;
   		this.mixtape.tags = this.mixtape.tags || [];
   		this.mixtape.tags.push(this.tag);
   		this.tag = '';
@@ -182,7 +184,8 @@ export default {
   		
   	},
   	cancel(){
-  		router.push(this.mode == 'add' ? '/mixtapes/list' : '/mixtape/' + this.mixtape.id);
+  		if(confirm('Attention, les modifications seront perdues'))
+  			router.push(this.mode == 'add' ? '/mixtapes/list' : '/mixtape/' + this.mixtape.id);
   	},
   	selectMixtapeCover(e) {
 		var files = e.target.files || e.dataTransfer.files;
