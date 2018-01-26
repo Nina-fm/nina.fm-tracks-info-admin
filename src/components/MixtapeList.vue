@@ -2,10 +2,10 @@
   <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
     <h1 class="page-header">Mixtapes <router-link to="/mixtape/add" tag="button" class="btn btn-primary pull-right">Ajouter une mixtape</router-link></h1>
     <p>
-      <span v-for="tag in tags" class="label label-default"><a v-on:click='addTagFilter(tag)'>{{tag}}</a></span>
+      <span v-for="tag in tags" class="label label-default" v-on:click='addTagFilter(tag)'>{{tag}}</span>
     </p>
         Filtres : 
-          <span v-for="tag in filters.tags" class="label label-default"><a v-on:click='removeTagFilter(tag)'>{{tag}}</a></span>
+          <span v-for="tag in filters.tags" class="label label-default" v-on:click='removeTagFilter(tag)'>{{tag}}</span>
     </p>
     <div class="table-responsive">
       <table class="table table-striped">
