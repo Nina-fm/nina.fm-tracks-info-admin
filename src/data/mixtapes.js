@@ -8,6 +8,21 @@ export default (function(){
 		password: process.env.API_PASSWORD
 	};
 
+	function saveMixtape(http_method, mixtape, callbacks){
+    	axios({
+		  method: http_method,
+		  url: process.env.API_URL,
+		  data: mixtape,
+		  params: auth
+		})
+		  .then(function(){
+          	if(callbacks.success) callbacks.success();
+		  })
+		  .catch(function (error) {
+        	if(callbacks.error) callbacks.error(error);
+		  }); 
+	}
+
 	var mixtapes = {
 		data : {
 			mixtapes: [],
@@ -67,19 +82,10 @@ export default (function(){
             });
         },
         create(mixtape, callbacks){
-        	
-        	axios({
-			  method: 'post',
-			  url: process.env.API_URL,
-			  data: mixtape,
-			  params: auth
-			})
-			  .then(function(){
-              	if(callbacks.success) callbacks.success();
-			  })
-			  .catch(function (error) {
-            	if(callbacks.error) callbacks.error(error);
-			  }); 
+        	saveMixtape('post', mixtape, callbacks);
+        },
+        update(mixtape, callbacks){
+        	saveMixtape('put', mixtape, callbacks);
         }
 	}
 

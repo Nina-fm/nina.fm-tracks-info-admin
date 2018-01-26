@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import MixtapeList from '@/components/MixtapeList'
-import Mixtape from '@/components/Mixtape'
-import AddMixtape from '@/components/AddMixtape'
+import ViewMixtape from '@/components/ViewMixtape'
+import AddEditMixtape from '@/components/AddEditMixtape'
 
 Vue.use(Router);
 
@@ -20,12 +20,17 @@ export default new Router({
     {
       path: '/mixtape/add',
       name: 'AddMixtape',
-      component: AddMixtape
+      component: AddEditMixtape
+    },
+    {
+      path: '/mixtape/:id/edit',
+      name: 'EditMixtape',
+      component: AddEditMixtape
     },
     {
       path: '/mixtape/:id',
-      name: 'Mixtape',
-      component: Mixtape
+      name: 'ViewMixtape',
+      component: ViewMixtape
     }
   ]
 });

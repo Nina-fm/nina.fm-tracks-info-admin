@@ -1,6 +1,6 @@
 <template>
   	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-  		<h1 class="page-header">Ajouter une mixtape <button class="btn btn-primary pull-right" v-on:click="saveMixtape">Enregistrer</button></h1>
+  		<h1 class="page-header">{{mode == 'add' ? 'Ajouter' : 'Modifier'}} une mixtape <button class="btn btn-primary pull-right" v-on:click="saveMixtape">Enregistrer</button></h1>
   		<form class="form-horizontal" v-on:submit.prevent>
 		  <div class="form-group">
 		    <label class="col-sm-2 control-label">DJ(s)</label>
@@ -23,7 +23,7 @@
 	          </div>
 	        </div>
 
-          <img :src="mixtape.cover" width="400px"/>
+          <img :src="pictures_base_url + mixtape.cover" width="400px"/>
           <a v-on:click="removeImage">remove</a>
 
 		  <div class="form-group">
@@ -100,12 +100,23 @@ import mixtapes from '../data/mixtapes'
 import router from '../router';
 
 export default {
-  name: 'Mixtape',
+  name: 'AddEditMixtape',
   data () {
     return {
       mixtape : {...mixtapes.data.mixtape},
-      track : {...mixtapes.data.track}
+      track : {...mixtapes.data.track},
+      pictures_base_url: process.env.API_URL,
+      mode : 'add'
     }
+  },
+  mounted () {
+  	if(this.$route.params.id){
+  		this.mode = 'edit';
+  		var that = this;
+  		mixtapes.get(this.$route.params.id,{success(r){that.mixtape = r;}});
+  	} else {
+  		this.pictures_base_url = '';
+  	}
   },
   methods: {
   	addTrack: function(){
@@ -116,16 +127,30 @@ export default {
   		this.mixtape.tracks.splice(index, 1);
   	},
   	saveMixtape: function(){
-  		mixtapes.create(this.mixtape, {
-  			success(){
-  				confirm("Mixtape sauvegardée");
-  				mixtapes.getList();
-		  		router.push('/mixtapes/list');
-  			},
-  			error(error){
-  				alert(error.response.data.message);
-  			}
-  		});
+  		if(this.mode == 'add'){
+  			mixtapes.create(this.mixtape, {
+	  			success(){
+	  				confirm("Mixtape sauvegardée");
+	  				mixtapes.getList();
+			  		router.push('/mixtapes/list');
+	  			},
+	  			error(error){
+	  				alert(error.response.data.message);
+	  			}
+	  		});
+  		} else {
+  			mixtapes.update(this.mixtape, {
+	  			success(){
+	  				confirm("Mixtape sauvegardée");
+	  				mixtapes.getList();
+			  		router.push('/mixtapes/list');
+	  			},
+	  			error(error){
+	  				alert(error.response.data.message);
+	  			}
+	  		});
+  		}
+  		
   	},
   	selectMixtapeCover(e) {
 		var files = e.target.files || e.dataTransfer.files;
@@ -136,6 +161,8 @@ export default {
 	createImage(file) {
 		var image = new Image();
 	    var reader = new FileReader();
+
+	    this.pictures_base_url = '';
 
 	    reader.onload = (e) => {
 	      this.mixtape.cover = e.target.result;

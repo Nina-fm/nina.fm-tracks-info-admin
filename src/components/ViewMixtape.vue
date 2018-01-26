@@ -1,7 +1,7 @@
 <template>
   	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
   		<div class="page-header">
-		  <h1>{{mixtape.artist}} - {{mixtape.title}} <small>{{mixtape.year}}</small></h1>
+		  <h1>{{mixtape.artist}} - {{mixtape.title}} <small>{{mixtape.year}}</small> <button class="btn btn-primary pull-right" v-on:click="editMixtape">Modifier</button></h1>
 		</div>
 	    <img v-bind:src="pictures_base_url + '/' + mixtape.cover">
 	    <h4>Pistes</h4>
@@ -41,6 +41,7 @@
 <script>
 import mixtapes from '../data/mixtapes'
 import {_} from 'vue-underscore'
+import router from '../router'
 
 export default {
   name: 'Mixtape',
@@ -58,6 +59,11 @@ export default {
   		}
   	});
   },
+  methods : {
+  	editMixtape(){
+  		router.push('/mixtape/' + this.mixtape.id + '/edit');
+  	}
+  }
 }
 </script>
 
