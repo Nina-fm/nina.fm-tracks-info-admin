@@ -2,6 +2,9 @@
   	<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
   		<div class="page-header">
 		  <h1>{{mixtape.artist}} - {{mixtape.title}} <small>{{mixtape.year}}</small> <button class="btn btn-primary pull-right" v-on:click="editMixtape">Modifier</button></h1>
+		  <div>
+    		<span v-for="tag in mixtape.tags" class="label label-default">{{tag}}</span>
+		  </div>
 		</div>
 	    <img v-bind:src="pictures_base_url + '/' + mixtape.cover">
 	    <h4>Pistes</h4>
@@ -71,5 +74,8 @@ export default {
 <style scoped>
 	img{
 		height: 300px;
+	}
+	span.label{
+		margin-right : 5px;
 	}
 </style>

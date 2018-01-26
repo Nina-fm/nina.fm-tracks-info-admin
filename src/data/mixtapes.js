@@ -29,7 +29,8 @@ export default (function(){
 			mixtape : {
 				type: 'mixtape',
 				cover: null,
-				tracks: []
+				tracks: [],
+				tags : []
 			},
 			track: {}
 		},
@@ -43,6 +44,10 @@ export default (function(){
 
               		if(m.text_tracks){
               			m.text_tracks = m.text_tracks.split('\n');
+              		}
+
+              		if(!m.tags){
+              			m.tags = [];
               		}
 
               		callbacks.success(m);	

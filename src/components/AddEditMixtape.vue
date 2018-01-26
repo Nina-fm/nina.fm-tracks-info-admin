@@ -38,6 +38,20 @@
 				<textarea class="form-control" rows="3" v-model="mixtape.comments"></textarea>
 		    </div>
 		  </div>
+		  <div class="form-group">
+		    <label class="col-sm-2 control-label">Tags</label>
+		    <div class="col-sm-10">
+		    	<input type="text" class="form-control" v-model:click="tag">
+		    	<button class="btn pull-right" v-on:click="addTag">Ajouter</button>
+		    	<div>
+		    		<span v-for="tag in mixtape.tags" class="label label-default">
+		    			{{tag}} <a v-on:click="removeTag(tag)"><i class="remove glyphicon glyphicon-remove-sign glyphicon-white"></i></a> 
+					</span>
+				</div>
+		    </div>
+		    		    			    
+
+		  </div>
 		</form>
 		<hr>
 		<h3>Ajouter des pistes</h3>
@@ -98,6 +112,8 @@
 <script>
 import mixtapes from '../data/mixtapes'
 import router from '../router';
+import {_} from 'vue-underscore';
+import Vue from 'vue';
 
 export default {
   name: 'AddEditMixtape',
@@ -105,6 +121,7 @@ export default {
     return {
       mixtape : {...mixtapes.data.mixtape},
       track : {...mixtapes.data.track},
+      tag : '',
       pictures_base_url: process.env.API_URL,
       mode : 'add'
     }
@@ -125,6 +142,14 @@ export default {
   	},
   	removeTrack: function(index){
   		this.mixtape.tracks.splice(index, 1);
+  	},
+  	addTag: function(){
+  		this.mixtape.tags = this.mixtape.tags || [];
+  		this.mixtape.tags.push(this.tag);
+  		this.tag = '';
+  	},
+  	removeTag: function(tag){
+  		this.mixtape.tags = _.without(this.mixtape.tags, tag);
   	},
   	saveMixtape: function(){
   		if(this.mode == 'add'){
@@ -183,5 +208,8 @@ export default {
 <style scoped>
 	h1 button{
 		margin-left:10px;
+	}
+	span.label{
+		margin-right : 5px;
 	}
 </style>
