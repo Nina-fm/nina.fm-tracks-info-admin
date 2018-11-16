@@ -154,6 +154,7 @@ export default {
   		var that = this;
   		mixtapes.get(this.$route.params.id,{success(r){that.mixtape = r;}});
   	} else {
+  		this.mixtape.tracks = [];
   		this.pictures_base_url = '';
   	}
   },
