@@ -59,33 +59,51 @@
 		<h3>Ajouter des pistes</h3>
 		<hr>
 		<div class="col-md-6">
-		<form v-on:submit.prevent="addTrack">
-		  <div class="form-group">
-		    <label class="col-sm-4">Artiste</label>
-		   	<div class="col-sm-8">
-		    	<input type="text" class="form-control" v-model="track.artist">
-		   	</div>
-		  </div>
-		  <div class="form-group">
-		    <label class="col-sm-4">Titre</label>
-		    <div class="col-sm-8">
-		    	<input type="text" class="form-control" v-model="track.title">
-		    </div>
-		  </div>
-		  <div class="form-group">
-		    <label class="col-sm-4">Commence à</label>
-		    <div class="col-sm-8 form-inline">
-			    <input type="number" class="col-md-4" v-model="track.start_hours" placeholder="heures">
-			    <input type="number" class="col-md-4" v-model="track.start_minutes" placeholder="minutes"> 
-			    <input type="number" class="col-md-4" v-model="track.start_seconds" placeholder="secondes">
-			</div>    
-		  </div>
-		  <div class="form-group">
-		  	<div class="col-sm-offset-4 col-sm-10">
-		    	<button type="submit" class="btn btn-default" >Ajouter la piste</button>
-		    </div>
- 			</div>
-		</form>
+			<h4>Une à une</h4>
+			<div class="panel panel-default">
+			  <div class="panel-body">
+			    <form v-on:submit.prevent="addTrack">
+					  <div class="form-group">
+					    <label class="col-sm-4">Artiste</label>
+					   	<div class="col-sm-8">
+					    	<input type="text" class="form-control" v-model="track.artist">
+					   	</div>
+					  </div>
+					  <div class="form-group">
+					    <label class="col-sm-4">Titre</label>
+					    <div class="col-sm-8">
+					    	<input type="text" class="form-control" v-model="track.title">
+					    </div>
+					  </div>
+					  <div class="form-group">
+					    <label class="col-sm-4">Commence à</label>
+					    <div class="col-sm-8 form-inline">
+						    <input type="number" class="col-md-4" v-model="track.start_hours" placeholder="heures">
+						    <input type="number" class="col-md-4" v-model="track.start_minutes" placeholder="minutes"> 
+						    <input type="number" class="col-md-4" v-model="track.start_seconds" placeholder="secondes">
+						</div>    
+					  </div>
+					  <div class="form-group">
+					  	<div class="col-sm-offset-4 col-sm-10">
+					    	<button type="submit" class="btn btn-default" >Ajouter la piste</button>
+					    </div>
+			 			</div>
+					</form>
+			  </div>
+			</div>	
+			<h4>Ou à partir de la tracklist au format texte</h4>
+			<div class="panel panel-default">
+			  <div class="panel-body">
+			    <form v-on:submit.prevent="parseTracks">
+					  <div class="form-group">
+							<textarea class="form-control" rows="10" v-model="mixtape.raw_tracks"></textarea>
+					  </div>
+					 	<div class="form-group">
+							<button type="submit" class="btn btn-default" >Ajouter les pistes</button>
+				  	</div>
+					</form>
+			  </div>
+			</div>	
 		</div>
 		<div class="col-md-6">
 		  <table class="table table-striped">
@@ -156,6 +174,18 @@ export default {
   	},
   	removeTag: function(tag){
   		this.mixtape.tags = _.without(this.mixtape.tags, tag);
+  	},
+  	parseTracks: function(){
+			var regex = /\d+ (.*) : (.*)/g
+			var matches = [];
+			var match = regex.exec(this.mixtape.raw_tracks);
+			while (match != null) {
+			    this.mixtape.tracks.push({
+			    	artist : match[1],
+			    	title : match[2]
+			    });
+			    match = regex.exec(this.mixtape.raw_tracks);
+			}
   	},
   	saveMixtape: function(){
   		if(this.mode == 'add'){
